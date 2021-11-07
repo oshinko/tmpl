@@ -1,0 +1,207 @@
+:root {
+  --theme-color: #000;
+}
+
+html {
+  font-family:
+    'Source Sans Pro',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    'Helvetica Neue',
+    Arial,
+    sans-serif;
+  font-size: 16px;
+  word-spacing: 1px;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  color: var(--theme-color);
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+  font-size: 100%;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.flex-direction-column {
+  flex-direction: column;
+}
+
+.gap-1em {
+  gap: 1em;
+}
+
+.gap-0_75em {
+  gap: .75em;
+}
+
+.gap-0_5em {
+  gap: .5em;
+}
+
+:is(body, #app) > header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+  margin-bottom: 1em;
+}
+
+:is(body, #app) > header > h1 {
+  font-size: 1.25em;
+  margin: 0;
+}
+
+:is(body, #app) > header > nav {
+  display: flex;
+  gap: .75em;
+}
+
+footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.w-max {
+  width: 100%;
+}
+
+.small-font {
+  font-size: .5em;
+}
+
+.modal-enter-active,
+.modal-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.modal-enter-from,
+.modal-leave-to {
+  opacity: 0;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: #00000077;
+}
+
+.modal .content {
+  position: absolute;
+  top: 1em;
+  right: 1em;
+  bottom: 1em;
+  left: 1em;
+  padding: .75em;
+  background: white;
+  border: 1px solid gray;
+  border-radius: .5em;
+  overflow-y: auto;
+}
+
+.modal .content > h1 {
+  margin: 0;
+  text-align: center;
+}
+
+.modal .content fieldset {
+  width: 96%;
+}
+
+code {
+  display: block;
+}
+
+code > * {
+  padding: .5em .75em;
+  background-color: #000;
+  border-radius: .2em;
+  line-height: 1.3em;
+  font-family: Consolas, 'Courier New', monospace;
+  color: #0f4;
+}
+
+.note {
+  padding: .5em;
+  background-color: rgba(255, 255, 0, .5);
+  border-radius: .2em;
+}
+
+.lds-dual-ring {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+}
+
+.lds-dual-ring:after {
+  content: " ";
+  display: block;
+  width: 1em;
+  height: 1em;
+  margin: .25em;
+  border-radius: 50%;
+  border: .15em solid gray;
+  border-color: gray transparent gray transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.m-_5em {
+  margin: .5em;
+}
+
+.mb-_25em {
+  margin-bottom: .25em;
+}
+
+.ml-_25em {
+  margin-left: .25em;
+}
+
+.ml-1em {
+  margin-left: 1em;
+}
+
+.mt-_25em {
+  margin-top: .25em;
+}
+
+@media screen and (min-width: 1024px) {
+  body {
+    margin-left: 4em;
+    margin-right: 4em;
+  }
+}

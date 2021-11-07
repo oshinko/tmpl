@@ -1,0 +1,157 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" type="text/css" href="./css/main.css">
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://unpkg.com/marked/lib/marked.js"></script>
+<script src="https://unpkg.com/moment"></script>
+<script src="https://unpkg.com/vue@next"></script>
+<script src="./js/_.js"></script>
+<script src="./js/components.js"></script>
+<style>
+textarea {
+  width: 100%;
+  height: 10em;
+}
+.outs {
+  background: white;
+  color: black;
+}
+</style>
+<title>($ title $)</title>
+</head>
+<body>
+<div id="app">
+  <app-header :title="title"></app-header>
+
+  <main>
+    <p class="note">
+      This app is example.
+    </p>
+
+    <section>
+      <h1>Console</h1>
+      <code class="mb-_25em">
+        <textarea
+          v-model="code"
+          class="mb-_25em"
+          :placeholder="defaultCode"
+          @keydown="evalByKeydown"
+        >
+        </textarea>
+        <textarea ref="outs" class="outs" readonly></textarea>
+      </code>
+      <button @click="run">&#9654;</button>
+    </section>
+
+    <section>
+      <h1>Example Code</h1>
+      <code><pre>echo Hello!
+sleep 60
+python -m http.server</pre></code>
+    </section>
+
+    <section v-html="marked.parse('# Marked in the browser\n\nRendered by **marked**.')">
+    </section>
+
+    <section>
+      <button @click="showModal = true">Show modal</button>
+      <modal :open="showModal" @close="showModal = false">
+        <h1>{{ title }}'s Modal</h1>
+        <p>
+          Contents...
+        </p>
+      </modal>
+    </section>
+  </main>
+
+  <app-footer :title="title"></app-footer>
+</div>
+
+<script>
+const vue = Vue.createApp({
+  setup() {
+    const title = Vue.ref('($ title $)')
+    const titleLength = Vue.computed(() => title.length)
+    const showModal = Vue.ref(false)
+    const defaultCode = Vue.ref(`var message = 'Hello!'\necho(message)\n`)
+    const code = Vue.ref(defaultCode.value)
+    const outs = Vue.ref()
+
+    function csv(rows) {
+      return rows.map(x => x.join(',')).join('\n')
+    }
+
+    function echo(...args) {
+      outs.value.value += args.join(' ') + '\n'
+    }
+
+    function clear() {
+      outs.value.value = ''
+    }
+
+    function eval(str) {
+      try {
+        window.eval(`
+          const csv = vue.csv
+          const data = [1, 2, 3, 4]
+          const echo = vue.echo
+          function dump(...args) {
+            return JSON.stringify(...args)
+          }
+        ` + str)
+      } catch (e) {
+        console.error(e)
+        echo(e.toString())
+      }
+    }
+
+    function run() {
+      clear()
+      eval(code.value)
+    }
+
+    Vue.watch(code, value => storage.set('code', value))
+
+    Vue.onMounted(() => {
+      Vue.nextTick(() => console.log('Mounted'))
+      code.value = storage.get('code')
+    })
+
+    return {
+      title,
+      titleLength,
+      marked,
+      showModal,
+      csv,
+      defaultCode,
+      code,
+      outs,
+      echo,
+      clear,
+      eval,
+      run,
+      evalByKeydown(e) {
+        if ((e.ctrlKey || e.shiftKey) && e.key === 'Enter') {
+          run()
+          e.preventDefault()
+        } else if (e.key === 'Tab') {
+          code.value += '  '
+          e.preventDefault()
+        } else if (e.key === 'Backspace' && code.value.endsWith('  ')) {
+          code.value = code.value.slice(0, -2)
+          e.preventDefault()
+        }
+      }
+    }
+  }
+})
+  .component('app-header', Components.header)
+  .component('app-footer', Components.footer)
+  .component('modal', Components.modal)
+  .mount('#app')
+</script>
+</body>
+</html>
