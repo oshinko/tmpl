@@ -32,9 +32,6 @@ exec(about_script, about)
 readme = (here / 'README.md').read_text(encoding='utf8')
 readme_mimetype = 'text/markdown'
 
-# import json
-# setuptools.setup = lambda **kwargs: print(json.dumps(kwargs, indent=2))
-
 setuptools.setup(
     name=about['name'],
     version=about['version'],
