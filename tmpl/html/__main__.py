@@ -17,6 +17,7 @@ def istext(data):
 
 
 def create(ctx):
+    ctx.output_dir.mkdir(parents=True, exist_ok=True)
     for path in sorted(pacakge_data_dir.glob('**/*')):
         dist = ctx.output_dir / path.relative_to(pacakge_data_dir)
         if path.is_dir():
