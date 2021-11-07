@@ -2,30 +2,42 @@ import pathlib
 
 import setuptools
 
-TOP_PACKAGE = 'tmpl'
+ROOT_PACKAGES = ['tmpl']
 
 here = pathlib.Path(__file__).parent
 
-top_package_path = pathlib.Path(TOP_PACKAGE.replace('.', '/'))
-packages = set()
 
-for path in top_package_path.glob('**/*'):
-    if path.is_file() and path.suffix == '.py':
-        parent_path = path.parent.relative_to(top_package_path.parent)
-        packages.add('.'.join(parent_path.parts))
+def PackagePath(package):
+    return pathlib.Path(package.replace('.', '/'))
 
-packages = sorted(packages)
+
+def scan_package(package):
+    packages = set()
+    package_path = PackagePath(package)
+    for path in package_path.glob('**/*'):
+        if path.is_file() and path.suffix == '.py':
+            parent_path = path.parent.relative_to(package_path.parent)
+            packages.add('.'.join(parent_path.parts))
+    return sorted(packages)
+
+
+packages = sorted(sum([scan_package(x) for x in ROOT_PACKAGES], start=[]))
 package_data = {x: [] for x in packages}
 
 for package in packages:
-    package_path = here / package.replace('.', '/')
+    package_path = here / PackagePath(package)
     package_data_path = package_path / 'data'
     for path in package_data_path.glob('**/*'):
         if path.is_file():
             path = path.relative_to(package_path)
             package_data[package].append(str(path))
 
-about_script = (here / TOP_PACKAGE / 'about.py').read_text(encoding='utf8')
+if len(ROOT_PACKAGES) == 1:
+    about_script_dir = here / PackagePath(ROOT_PACKAGES[0])
+else:
+    about_script_dir = here
+
+about_script = (about_script_dir / 'about.py').read_text(encoding='utf8')
 about = {}
 exec(about_script, about)
 
