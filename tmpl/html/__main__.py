@@ -4,6 +4,8 @@ import re
 
 from . import __name__ as MODULE_NAME
 
+DEFAULT_TITLE = 'Your App'
+
 pacakge_data_dir = pathlib.Path(__file__).parent / 'data'
 
 
@@ -27,6 +29,8 @@ def create(ctx):
         if istext(data):
             for k, v in vars(ctx).items():
                 var = k.encode('utf8')
+                if isinstance(v, pathlib.Path):
+                    v = v.as_posix()
                 val = str(v).encode('utf8')
                 pattern = br'\(\$\s+VAR+\s+\$\)'.replace(b'VAR', var)
                 data = re.sub(pattern, val, data)
@@ -36,9 +40,14 @@ def create(ctx):
 parser = argparse.ArgumentParser('python -m ' + MODULE_NAME)
 subparsers = parser.add_subparsers(dest='method', required=True)
 subparser = subparsers.add_parser('create')
-subparser.add_argument('--title', default='Your App')
+subparser.add_argument('--title', default=DEFAULT_TITLE)
+subparser.add_argument('--copyright', help='default value is TITLE')
 subparser.add_argument('output_dir', metavar='output-dir', nargs='?',
                        type=pathlib.Path, default='.')
 subparser.set_defaults(action=create)
 args = parser.parse_args()
+
+if not args.copyright:
+    args.copyright = args.title
+
 args.action(args)

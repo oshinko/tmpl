@@ -67,7 +67,7 @@ python -m http.server</pre></code>
     </section>
   </main>
 
-  <app-footer :title="title"></app-footer>
+  <app-footer :copyright="copyright"></app-footer>
 </div>
 
 <script>
@@ -75,6 +75,7 @@ const vue = Vue.createApp({
   setup() {
     const title = Vue.ref('($ title $)')
     const titleLength = Vue.computed(() => title.length)
+    const copyright = Vue.ref('($ copyright $)')
     const showModal = Vue.ref(false)
     const defaultCode = Vue.ref(`var message = 'Hello!'\necho(message)\n`)
     const code = Vue.ref(defaultCode.value)
@@ -123,6 +124,7 @@ const vue = Vue.createApp({
     return {
       title,
       titleLength,
+      copyright,
       marked,
       showModal,
       csv,

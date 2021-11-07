@@ -13,7 +13,7 @@ const Components = {
   },
   footer: {
     props: {
-      title: {
+      copyright: {
         type: String,
         default: 'Your App Name'
       },
@@ -24,7 +24,7 @@ const Components = {
     },
     template: `
       <footer>
-        <small>Copyright © {{ year }} {{ title }} All rights reserved.</small>
+        <small>Copyright © {{ year }} {{ copyright }} All rights reserved.</small>
       </footer>`
   },
   modal: {
