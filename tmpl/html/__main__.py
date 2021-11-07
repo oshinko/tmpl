@@ -35,9 +35,7 @@ def create(ctx):
 parser = argparse.ArgumentParser('python -m ' + MODULE_NAME)
 subparsers = parser.add_subparsers(dest='method', required=True)
 subparser = subparsers.add_parser('create')
-
 subparser.add_argument('--title', default='Your App')
-
 subparser.add_argument('output_dir', metavar='output-dir', nargs='?',
                        type=pathlib.Path, default='.')
 subparser.set_defaults(action=create)
