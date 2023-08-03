@@ -1,5 +1,5 @@
 name = 'tmpl'
-version = '0.0.0'
+version = '0.0.1'
 description = 'Generator of my favorite templates'
 author = 'Oshinko'
 author_email = 'osnk@renjaku.jp'
